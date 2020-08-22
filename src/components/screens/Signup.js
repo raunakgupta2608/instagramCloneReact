@@ -10,28 +10,8 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
 
-    const schema = {
-        name: Joi.string().required().min(3).max(25).label('Name'),
-        email: Joi.string().required().min(3).max(25).label('Email'),
-        password: Joi.string().required().min(3).max(25).label('Password'),
-    }
-
-    const validate = () => {
-        const options = { abortEarly: false };
-        const fields = { name, password, email};
-        const { error } = Joi.validate(fields, schema, options);
-
-        if(!error) return null;
-
-        const errors = {};
-        for(let item of error.details) errors[item.path[0]] = item.message;
-        console.log(errors);
-        return errors;
-        
-    };
     
     const PostData = async () => {
-        // validate();
         const resp = await fetch("/auth/signup", {
             method: "post",
             headers: {

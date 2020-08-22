@@ -21,9 +21,11 @@ const Login = () => {
         });
         try {
             const data = await resp.json(); console.log(data);
-            if(data.err) M.toast({html: data.err, classes: "#c62828 red darken-3"});
+            if(data.err) return M.toast({html: data.err, classes: "#c62828 red darken-3"});
     
             else {
+                localStorage.setItem("jwt", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
                 M.toast({html: "Login Successful", classes: "#43a047 green darken-1"});
                 history.push('/');
             }
