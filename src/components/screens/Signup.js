@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Joi, { schema } from 'joi-browser';
 import M from 'materialize-css';
 
 const Signup = () => {
