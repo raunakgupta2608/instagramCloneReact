@@ -14,6 +14,7 @@ export const UserContext = createContext();
 const Routing = () => {
   const history = useHistory();
   const { state, dispatch } = useContext(UserContext);
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if(user) {
@@ -44,6 +45,7 @@ const Routing = () => {
     </Switch>
   )
 }
+
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
