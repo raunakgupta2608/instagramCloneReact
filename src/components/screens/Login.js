@@ -9,8 +9,10 @@ const Login = () => {
 
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
+    const [btndisable, setBtndisable] = useState(false);
 
     const PostData = async () => {
+        setBtndisable(true);
         const resp = await fetch("/auth/login", {
             method: "post",
             headers: {
@@ -23,7 +25,10 @@ const Login = () => {
         });
         try {
             const data = await resp.json(); console.log(data);
-            if(data.err) return M.toast({html: data.err, classes: "#c62828 red darken-3"});
+            if(data.message) {
+                setBtndisable(false);
+                return M.toast({html: data.message, classes: "#c62828 red darken-3"});
+            }
     
             else {
                 localStorage.setItem("jwt", data.token);
@@ -48,7 +53,7 @@ const Login = () => {
                     value={password} onChange={(e) => setPassword(e.target.value)}
                 />
                 <button className="btn waves-effect waves-light #64b5f6 blue darken-2" type="submit" name="action"
-                    onClick={() => PostData() }>
+                    disabled={btndisable} onClick={() => PostData() }>
                     Login
                 </button>
                 <h5>
