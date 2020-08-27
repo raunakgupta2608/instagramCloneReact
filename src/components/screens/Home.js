@@ -11,7 +11,6 @@ const Home = () => {
             }
         })
         const result = await resp.json();
-        console.log(result.posts);
         setData(result.posts);
     }
 
