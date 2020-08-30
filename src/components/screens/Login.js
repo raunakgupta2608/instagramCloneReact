@@ -27,7 +27,7 @@ const Login = () => {
             })
         });
         try {
-            const data = await resp.json(); console.log(data);
+            const data = await resp.json();
             setLoading(false);
 
             if(data.message) {

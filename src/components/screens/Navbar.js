@@ -9,12 +9,11 @@ const Navbar = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const logout = (e) => {
+    const logout = () => {
         setLoading(true);
         setTimeout(() => {
             localStorage.clear();
             dispatch({type: "CLEAR"});
-            e.preventDefault();
             history.push('/login');
             setLoading(false);
         },2000)
@@ -23,15 +22,15 @@ const Navbar = () => {
     const renderList = () => {
         if(state) {
             return [
-                <li><NavLink to="/profile">Profile</NavLink></li>,
-                <li><NavLink to="/create">Create Post</NavLink></li>,
-                <li><NavLink to="" onClick={(e) => {logout(e)}}>Logout</NavLink></li>
+                <li key="3"><NavLink to="/profile">Profile</NavLink></li>,
+                <li key="4"><NavLink to="/create">Create Post</NavLink></li>,
+                <li key="5"><NavLink to="" onClick={(e) => {logout()}}>Logout</NavLink></li>
             ]
         }
         else {
             return [
-                <li><NavLink to="/login">Login</NavLink></li>,
-                <li><NavLink to="/signup">Sign Up</NavLink></li>
+                <li key="1"><NavLink to="/login">Login</NavLink></li>,
+                <li key="2"><NavLink to="/signup">Sign Up</NavLink></li>
             ]
         }
     }
