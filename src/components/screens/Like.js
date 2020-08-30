@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Like = ({ state, item, handleLike }) => {
+const Like = ({ state, item }) => {
     let like = "";
     const [color, setColor] = useState("");
     const [postObj, setPostObj] = useState(item);
@@ -17,6 +17,7 @@ const Like = ({ state, item, handleLike }) => {
         });
 
         const result = await resp.json();
+        console.log(result);
         if(result) setPostObj(result);
     }
 
@@ -29,10 +30,22 @@ const Like = ({ state, item, handleLike }) => {
         postLikeOrUnlike();
     }
 
+    const likes = () => {
+        console.log(postObj);
+        if(postObj.likes.length > 1) {
+            return (
+                `Liked by ${postObj.likes[0].name} and ${postObj.likes.length - 1}  others`
+            )
+        }
+        else {
+            return `${postObj.likes.length} Likes`
+        }
+    }
+
     return (
         <>
             <i className="material-icons" onClick={() => likeOrUnlike() }
-            style={{ color: color, cursor: "pointer",}}
+            style={{ color: color, cursor: "pointer"}}
             >
             favorite
             </i>

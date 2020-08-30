@@ -45,6 +45,11 @@ const Login = () => {
             console.log(error);
         }   
     }
+
+    const Enter = (e) => {
+        if(e.key == "Enter") document.getElementById("bt").click()
+    }
+
     if(!loading) {
         return (
             <div className="mycard">
@@ -53,10 +58,10 @@ const Login = () => {
                     <input type="text" placeholder="Email" 
                         value={email} onChange={(e) => setEmail(e.target.value)}
                     />
-                    <input type="password" placeholder="Password" 
+                    <input type="password" placeholder="Password" onKeyUp={(e) => Enter(e)}
                         value={password} onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button className="btn waves-effect waves-light #64b5f6 blue darken-2" type="submit" name="action"
+                    <button id="bt" className="btn waves-effect waves-light #64b5f6 blue darken-2" type="submit" name="action"
                         disabled={btndisable} onClick={() => PostData() }>
                         Login
                     </button>

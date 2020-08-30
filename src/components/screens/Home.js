@@ -21,25 +21,26 @@ const Home = () => {
         fetchPosts()
     }, []);
 
-    const handleLike = (result) => {
-        const copydata = data;
-        var index = -1;
-        const copyresult = copydata.filter((i, ind) => {
-            if(i._id === result._id) {
-                index = ind;
-                return i;
-            }
-        });
-        console.log(index);
-        if(index === -1 ) {
-            copydata[index] = copyresult;
+    const makeComment = async (text, postId) => {
+        try {
+            const resp = await fetch('/post/comment', {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+localStorage.getItem("jwt")
+                },
+                body: JSON.stringify({
+                    postId,
+                    text
+                })
+            });
+            const result = await resp.json();
+            const newData = data.map((item) => { return item._id == result._id ? result : item});
+            setData(newData);
+        } catch (error) {
+            console.log(error);
         }
-        else {
-            copyresult[0].likes = result.likes;
-            copydata[index] = copyresult;
-        }
-        setData(copydata);
-    } 
+    }
 
     return (
         <>
@@ -48,17 +49,34 @@ const Home = () => {
             data.map((item) => {
                 return (
                     <div className="card home-card" key={item._id}>
-                        <h5>{ item.postedBy.name }</h5>
+                        <h5 className="p-3">{ item.postedBy.name }</h5>
                         <div className="card-image">
                             <img src={ item.photo } alt="post" />
                         </div>
                         <div className="card-content">
-                            <Like item={item} state={state} handleLike={(result) => handleLike(result)} />
-                            {/* <i className="material-icons pl-2">thumb_up</i>
-                            <i className="material-icons pl-2">thumb_down</i> */}
-                            <h6>{ item.title }</h6>
-                            <p>{ item.body }</p>
-                            <input type="text" placeholder="Add a Comment"/>
+                            <Like item={item} state={state}/>
+                            {/* <h6>{ item.title }</h6>
+                            <p>{ item.body }</p> */}
+                            {
+                                item.comments.map((record, index) => {
+                                    return (
+                                        <div key={record._id} className="d-flex align-item-center">
+                                            <span style={{fontWeight: "500"}} className="pr-2">
+                                                {record.postedBy[0].name}
+                                            </span>
+                                            <p>{record.text}</p>
+                                        </div>
+
+                                    )
+                                })
+                            }
+                            <form onSubmit = {(e) => {
+                                e.preventDefault();
+                                makeComment(e.target[0].value, item._id);
+                                e.target[0].value = "";
+                            }}>
+                                <input type="text" placeholder="Add a Comment"/>
+                            </form>
                         </div>
                     </div>
                 )
