@@ -8,6 +8,7 @@ const CreatePost = () => {
     const [body, setBody] = useState("")
     const [image, setImage] = useState("")
     const [url, setUrl] = useState("")
+    const [disable, setDisable] = useState(false)
 
     useEffect(() => {
         //posting form data 
@@ -25,8 +26,6 @@ const CreatePost = () => {
                         photo: url
                     })
                 });
-    
-                console.log(res);
                 const data = await res.json(); 
                 console.log(data);
                 if(data.err) return M.toast({html: data.err, classes: "#c62828 red darken-3"});
@@ -45,6 +44,7 @@ const CreatePost = () => {
     }, [url]);
 
     const postDetails = async () => {
+        setDisable(true);
         //fetching form data
         const data = new FormData();
         data.append("file", image);
@@ -57,8 +57,10 @@ const CreatePost = () => {
         try {
             const data = await resp.json();
             setUrl(data.url);
+            setDisable(false);
         } catch (error) {
             console.log(error);
+            setDisable(false);
         }
     }
 
@@ -80,7 +82,7 @@ const CreatePost = () => {
                     <input className="file-path validate" type="text" />
                 </div>
             </div> 
-            <button className="btn waves-effect waves-light #64b5f6 blue darken-2" 
+            <button className="btn waves-effect waves-light #64b5f6 blue darken-2" disabled={disable}
                 type="submit" name="action" onClick={() => postDetails()}
             >
                 Submit Post
