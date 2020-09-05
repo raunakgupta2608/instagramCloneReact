@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useReducer, createContext } from 'react';
 import '../../App.css';
 import Like from './Like';
-import { UserContext } from './../../App';
+import { UserContext } from '../../App';
 import OverlayListGroup from './OverlayListGroup';
 import { overlayReducer, initialState } from '../../reducer/overlayReducer';
 export const OverlayContext = createContext();
@@ -49,6 +49,30 @@ const Home = () => {
         }
     }
 
+    const deleteComment = async (post, commentId) => {
+        const newComments = post.comments.filter((c) => {
+            return c._id !== commentId;
+        }); 
+        const postId = post._id;
+        try {
+            const resp = await fetch('/post/comment', {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer "+localStorage.getItem("jwt")
+                },
+                body: JSON.stringify({
+                    postId,
+                    newComments
+                })
+            });
+            const result = await resp.json();
+            console.log(result);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <>
         <div className="home">
@@ -71,7 +95,8 @@ const Home = () => {
                             }
                             {
                                 modal ? 
-                                    <OverlayListGroup postId={item._id}/>
+                                    <OverlayListGroup postId={item._id} data={data} 
+                                        callbackFromParent={(d) => setData(d)} />
                                 : ""
                             }
                         </h5>
@@ -85,11 +110,18 @@ const Home = () => {
                             {
                                 item.comments.map((record, index) => {
                                     return (
-                                        <div key={record._id} className="d-flex align-item-center">
+                                        <div key={record._id + index} className="d-flex align-item-center">
                                             <span style={{fontWeight: "500"}} className="pr-2">
                                                 {record.postedBy[0].name}
                                             </span>
                                             <p>{record.text}</p>
+                                            {
+                                                state ?
+                                                state._id === record.postedBy[0]._id ?
+                                                <i className="material-icons ml-auto" style={{cursor: "pointer"}}
+                                                onClick={() => deleteComment(item, record._id)}>delete</i> 
+                                                : "" : ""
+                                            }
                                         </div>
 
                                     )
