@@ -7,7 +7,7 @@ import OverlayListGroup from './OverlayListGroup';
 import { overlayReducer, initialState } from '../../reducer/overlayReducer';
 export const OverlayContext = createContext();
 
-const Home = () => {
+const FollowingPosts = () => {
     const { state, dispatch } = useContext(UserContext);
 
     const [modal, dispatchModal] = useReducer(overlayReducer, initialState);
@@ -15,7 +15,7 @@ const Home = () => {
     const [data, setData] = useState([]);
 
     async function fetchPosts() {
-        const resp = await fetch('/post/allpost', {
+        const resp = await fetch('/post/getfollowingpost', {
             headers: {
                 "Authorization" : "Bearer "+localStorage.getItem('jwt')
             }
@@ -157,4 +157,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default FollowingPosts;

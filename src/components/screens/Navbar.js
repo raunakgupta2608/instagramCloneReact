@@ -24,7 +24,8 @@ const Navbar = () => {
             return [
                 <li key="3"><NavLink to="/profile">Profile</NavLink></li>,
                 <li key="4"><NavLink to="/create">Create Post</NavLink></li>,
-                <li key="5"><NavLink to="" onClick={(e) => {logout()}}>Logout</NavLink></li>
+                <li key="5"><NavLink to="/getfollowingpost">Following Posts </NavLink></li>,
+                <li key="6"><NavLink to="" onClick={(e) => {logout()}}>Logout</NavLink></li>
             ]
         }
         else {
@@ -38,7 +39,7 @@ const Navbar = () => {
         return (
             <nav>
                 <div className="nav-wrapper white">
-                <NavLink to={ state? "/" : "/login" } className="brand-logo left">Instagram</NavLink>
+                <NavLink to={ state? "/" : "/login" } className="brand-logo pl-3 left">Instagram</NavLink>
                 <ul id="nav-mobile" className="right">
                 { renderList() }
                 </ul>
